@@ -15,6 +15,8 @@
       presentationEngine.prev = shower._turnPreviousSlide;
       presentationEngine.zoomIn = shower.enterSlideMode;
       presentationEngine.zoomOut = shower.enterListMode;
+      presentationEngine.last = shower.last;
+      presentationEngine.first = shower.first;
     }
   }
 
@@ -28,6 +30,8 @@
       case 'nexty-prev': return presentationEngine.prev();
       case 'nexty-zoomIn': return presentationEngine.zoomIn();
       case 'nexty-zoomOut': return presentationEngine.zoomOut();
+      case 'nexty-last': return presentationEngine.last();
+      case 'nexty-first': return presentationEngine.first();
       default: return window.parent.postMessage('error: unrecognized command', '*');
     }
   });
