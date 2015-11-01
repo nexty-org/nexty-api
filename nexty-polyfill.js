@@ -23,9 +23,9 @@
     if (presentationEngine.info.name === 'reveal' && !presentationEngine.info.version) {
       presentationEngine.next = Reveal.next;
       presentationEngine.prev = Reveal.prev;
-      presentationEngine.zoomIn = Reveal.toggleOverview.bind(Reveal, true);
-      presentationEngine.zoomOut = Reveal.toggleOverview.bind(Reveal, false);
-      presentationEngine.last = Reveal.navigateTo.bind(Reveal, 9999);
+      presentationEngine.zoomIn = Reveal.toggleOverview.bind(Reveal, false);
+      presentationEngine.zoomOut = Reveal.toggleOverview.bind(Reveal, true);
+      presentationEngine.last = Reveal.navigateTo.bind(Reveal, 9999, 9999);
       presentationEngine.first = Reveal.navigateTo.bind(Reveal, 0);
       //no up and down - intentionally
     }
