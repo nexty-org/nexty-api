@@ -3,6 +3,7 @@
 
   function getEngine() {
     if (window.shower) return {name: 'shower', version: shower.version};  //shower.version is currently undefined
+    if (window.Reveal) return {name: 'reveal', version: Reveal.version};  //Reveal.version is currently undefined
     return {error: 'presentation engine is not recognized'};
   }
 
@@ -17,6 +18,16 @@
       presentationEngine.zoomOut = shower.enterListMode;
       presentationEngine.last = shower.last;
       presentationEngine.first = shower.first;
+    }
+
+    if (presentationEngine.info.name === 'reveal' && !presentationEngine.info.version) {
+      presentationEngine.next = Reveal.next;
+      presentationEngine.prev = Reveal.prev;
+      presentationEngine.zoomIn = Reveal.toggleOverview.bind(Reveal, true);
+      presentationEngine.zoomOut = Reveal.toggleOverview.bind(Reveal, false);
+      presentationEngine.last = Reveal.navigateTo.bind(Reveal, 9999);
+      presentationEngine.first = Reveal.navigateTo.bind(Reveal, 0);
+      //no up and down - intentionally
     }
   }
 
