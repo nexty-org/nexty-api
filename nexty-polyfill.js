@@ -37,7 +37,6 @@
       //deck does not support zooming in and out
       presentationEngine.zoomIn = function() {};
       presentationEngine.zoomOut = function() {};
-      presentationEngine.slidesNumber = $.deck('getSlides').length;
       presentationEngine.last = function() {$.deck('go', $.deck('getSlides').length - 1);};
       presentationEngine.first = $.deck.bind($.deck, 'go', 0);
     }
