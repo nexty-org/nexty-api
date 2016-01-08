@@ -4,6 +4,7 @@
   function getEngine() {
     if (window.shower) return {name: 'shower', version: shower.version};  //shower.version is currently undefined
     if (window.Reveal) return {name: 'reveal', version: Reveal.version};  //Reveal.version is currently undefined
+    if (window.$ && $.deck) return {name: 'deck', version: $.deck.version}; //$.deck.version is currently undefined
     return {error: 'presentation engine is not recognized'};
   }
 
@@ -28,6 +29,17 @@
       presentationEngine.last = Reveal.navigateTo.bind(Reveal, 9999, 9999);
       presentationEngine.first = Reveal.navigateTo.bind(Reveal, 0);
       //no up and down - intentionally
+    }
+
+    if (presentationEngine.info.name === 'deck' && !presentationEngine.info.version) {
+      presentationEngine.next = $.deck('next');
+      presentationEngine.prev = $.deck('prev');
+      //deck does not support zooming in and out
+      presentationEngine.zoomIn = function() {};
+      presentationEngine.zoomOut = function() {};
+      presentationEngine.slidesNumber = $.deck('getSlides').length;
+      presentationEngine.last = $.deck.bind($.deck, 'go', presentationEngine.slidesNumber - 1);
+      presentationEngine.first = $.deck.bind($.deck, 'go', 0);
     }
   }
 
