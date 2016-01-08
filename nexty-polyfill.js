@@ -32,8 +32,8 @@
     }
 
     if (presentationEngine.info.name === 'deck' && !presentationEngine.info.version) {
-      presentationEngine.next = $.deck('next');
-      presentationEngine.prev = $.deck('prev');
+      presentationEngine.next = $.deck.bind($.deck, 'next');
+      presentationEngine.prev = $.deck.bind($.deck, 'prev');
       //deck does not support zooming in and out
       presentationEngine.zoomIn = function() {};
       presentationEngine.zoomOut = function() {};
