@@ -16,106 +16,108 @@
     presentationEngine.info = getEngine();
     if (!presentationEngine.info.name) return;
 
-    if (presentationEngine.info.name === 'shower' && !presentationEngine.info.version) {
-      presentationEngine.next = shower._turnNextSlide;
-      presentationEngine.prev = shower._turnPreviousSlide;
-      presentationEngine.zoomIn = shower.enterSlideMode;
-      presentationEngine.zoomOut = shower.enterListMode;
-      presentationEngine.last = shower.last;
-      presentationEngine.first = shower.first;
+    var pe = presentationEngine;
+
+    if (pe.info.name === 'shower' && !pe.info.version) {
+      pe.next = shower._turnNextSlide;
+      pe.prev = shower._turnPreviousSlide;
+      pe.zoomIn = shower.enterSlideMode;
+      pe.zoomOut = shower.enterListMode;
+      pe.last = shower.last;
+      pe.first = shower.first;
     }
 
-    if (presentationEngine.info.name === 'reveal' && !presentationEngine.info.version) {
-      presentationEngine.next = Reveal.next;
-      presentationEngine.prev = Reveal.prev;
-      presentationEngine.zoomIn = Reveal.toggleOverview.bind(Reveal, false);
-      presentationEngine.zoomOut = Reveal.toggleOverview.bind(Reveal, true);
-      presentationEngine.last = Reveal.navigateTo.bind(Reveal, 9999, 9999);
-      presentationEngine.first = Reveal.navigateTo.bind(Reveal, 0);
+    if (pe.info.name === 'reveal' && !pe.info.version) {
+      pe.next = Reveal.next;
+      pe.prev = Reveal.prev;
+      pe.zoomIn = Reveal.toggleOverview.bind(Reveal, false);
+      pe.zoomOut = Reveal.toggleOverview.bind(Reveal, true);
+      pe.last = Reveal.navigateTo.bind(Reveal, 9999, 9999);
+      pe.first = Reveal.navigateTo.bind(Reveal, 0);
       //no up and down - intentionally
     }
 
-    if (presentationEngine.info.name === 'deck' && !presentationEngine.info.version) {
-      presentationEngine.next = $.deck.bind($.deck, 'next');
-      presentationEngine.prev = $.deck.bind($.deck, 'prev');
+    if (pe.info.name === 'deck' && !pe.info.version) {
+      pe.next = $.deck.bind($.deck, 'next');
+      pe.prev = $.deck.bind($.deck, 'prev');
       //deck does not support zooming in and out
-      presentationEngine.zoomIn = function() {};
-      presentationEngine.zoomOut = function() {};
-      presentationEngine.last = function() {$.deck('go', $.deck('getSlides').length - 1);};
-      presentationEngine.first = $.deck.bind($.deck, 'go', 0);
+      pe.zoomIn = function() {};
+      pe.zoomOut = function() {};
+      pe.last = function() {$.deck('go', $.deck('getSlides').length - 1);};
+      pe.first = $.deck.bind($.deck, 'go', 0);
     }
 
-    if (presentationEngine.info.name === 'flowtime' && !presentationEngine.info.version) {
-      presentationEngine.next = Flowtime.nextFragment;
-      presentationEngine.prev = Flowtime.prevFragment;
-      presentationEngine.zoomIn = Flowtime.showOverview.bind(Flowtime, false);
-      presentationEngine.zoomOut = Flowtime.showOverview.bind(Flowtime, true);
-      presentationEngine.last = Flowtime.gotoEnd;
-      presentationEngine.first = Flowtime.gotoHome;
+    if (pe.info.name === 'flowtime' && !pe.info.version) {
+      pe.next = Flowtime.nextFragment;
+      pe.prev = Flowtime.prevFragment;
+      pe.zoomIn = Flowtime.showOverview.bind(Flowtime, false);
+      pe.zoomOut = Flowtime.showOverview.bind(Flowtime, true);
+      pe.last = Flowtime.gotoEnd;
+      pe.first = Flowtime.gotoHome;
     }
 
-    if (presentationEngine.info.name === 'fathom' && !presentationEngine.info.version) {
+    if (pe.info.name === 'fathom' && !pe.info.version) {
       var $root = $('.slide').parent();
       var sendKeyPress = function(code) {
         var e = jQuery.Event("keydown");
         e.which = e.keyCode = code;
         $root.trigger(e);
       };
-      presentationEngine.next = sendKeyPress.bind(null, 39);
-      presentationEngine.prev = sendKeyPress.bind(null, 37);
-      presentationEngine.zoomIn = function() {};
-      presentationEngine.zoomOut = function() {};
-      presentationEngine.last = function() {};
-      presentationEngine.first = function() {};
+      pe.next = sendKeyPress.bind(null, 39);
+      pe.prev = sendKeyPress.bind(null, 37);
+      pe.zoomIn = function() {};
+      pe.zoomOut = function() {};
+      pe.last = function() {};
+      pe.first = function() {};
     }
 
-    if (presentationEngine.info.name === 'bespoke' && !presentationEngine.info.version) {
-      presentationEngine.next = bespoke.next;
-      presentationEngine.prev = bespoke.prev;
-      presentationEngine.zoomIn = function() {};
-      presentationEngine.zoomOut = function() {};
-      presentationEngine.last = function() {};
-      presentationEngine.first = function() {};
+    if (pe.info.name === 'bespoke' && !pe.info.version) {
+      pe.next = bespoke.next;
+      pe.prev = bespoke.prev;
+      pe.zoomIn = function() {};
+      pe.zoomOut = function() {};
+      pe.last = function() {};
+      pe.first = function() {};
     }
 
-    if (presentationEngine.info.name === 'impress' && !presentationEngine.info.version) {
+    if (pe.info.name === 'impress' && !pe.info.version) {
       var steps = document.getElementsByClassName('step');
       if (!steps.length) return;
       var lastSlide = document.getElementsByClassName('step').length - 2;
       var zoomedOutFrom = undefined;
       resetZoomAndDo = function(func) {return function() { zoomedOutFrom = undefined; return func(); }};
-      presentationEngine.next = resetZoomAndDo(impress().next);
-      presentationEngine.prev = resetZoomAndDo(impress().prev);
-      presentationEngine.zoomIn = function() {
+      pe.next = resetZoomAndDo(impress().next);
+      pe.prev = resetZoomAndDo(impress().prev);
+      pe.zoomIn = function() {
         if (zoomedOutFrom) {
           impress().goto(zoomedOutFrom);
           zoomedOutFrom = undefined;
         }
       };
-      presentationEngine.zoomOut = function() {
+      pe.zoomOut = function() {
         current = document.getElementsByClassName('step present');
         if (current.length && current[0].id !== 'overview' ) {
           zoomedOutFrom = current[0];
           impress().goto(-1);
         }
       };
-      presentationEngine.last = resetZoomAndDo(impress().goto.bind(null, lastSlide));
-      presentationEngine.first = resetZoomAndDo(impress().goto.bind(null, 0));
+      pe.last = resetZoomAndDo(impress().goto.bind(null, lastSlide));
+      pe.first = resetZoomAndDo(impress().goto.bind(null, 0));
     }
   }
 
   fillPolyFill();
 
   window.addEventListener('message', function(event) {
-    if (event.data === 'nexty-get-engine') return window.parent.postMessage(presentationEngine.info, '*');
-    if (!presentationEngine.info.name) return window.parent.postMessage('error: ' + presentationEngine.info.error, '*');
+    if (event.data === 'nexty-get-engine') return window.parent.postMessage(pe.info, '*');
+    if (!pe.info.name) return window.parent.postMessage('error: ' + pe.info.error, '*');
     switch (event.data) {
-      case 'nexty-next': return presentationEngine.next();
-      case 'nexty-prev': return presentationEngine.prev();
-      case 'nexty-zoomIn': return presentationEngine.zoomIn();
-      case 'nexty-zoomOut': return presentationEngine.zoomOut();
-      case 'nexty-last': return presentationEngine.last();
-      case 'nexty-first': return presentationEngine.first();
+      case 'nexty-next': return pe.next();
+      case 'nexty-prev': return pe.prev();
+      case 'nexty-zoomIn': return pe.zoomIn();
+      case 'nexty-zoomOut': return pe.zoomOut();
+      case 'nexty-last': return pe.last();
+      case 'nexty-first': return pe.first();
       default: return window.parent.postMessage('error: unrecognized command', '*');
     }
   });
