@@ -6,6 +6,7 @@
     if (window.Reveal) return {name: 'reveal', version: Reveal.version};  //Reveal.version is currently undefined
     if (window.$ && $.deck) return {name: 'deck', version: $.deck.version}; //$.deck.version is currently undefined
     if (window.Flowtime) return {name: 'flowtime', version: Flowtime.version};  //Reveal.version is currently undefined
+    if (window.Fathom) return {name: 'fathom', version: Fathom.version};  //Reveal.version is currently undefined
     return {error: 'presentation engine is not recognized'};
   }
 
@@ -49,6 +50,21 @@
       presentationEngine.zoomOut = Flowtime.showOverview.bind(Flowtime, true);
       presentationEngine.last = Flowtime.gotoEnd;
       presentationEngine.first = Flowtime.gotoHome;
+    }
+
+    if (presentationEngine.info.name === 'fathom' && !presentationEngine.info.version) {
+      var $root = $('.slide').parent();
+      var sendKeyPress = function(code) {
+        var e = jQuery.Event("keydown");
+        e.which = e.keyCode = code;
+        $root.trigger(e);
+      };
+      presentationEngine.next = sendKeyPress.bind(null, 39);
+      presentationEngine.prev = sendKeyPress.bind(null, 37);
+      presentationEngine.zoomIn = function() {};
+      presentationEngine.zoomOut = function() {};
+      presentationEngine.last = function() {};
+      presentationEngine.first = function() {};
     }
   }
 
