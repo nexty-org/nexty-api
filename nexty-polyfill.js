@@ -5,8 +5,9 @@
     if (window.shower) return {name: 'shower', version: shower.version};  //shower.version is currently undefined
     if (window.Reveal) return {name: 'reveal', version: Reveal.version};  //Reveal.version is currently undefined
     if (window.$ && $.deck) return {name: 'deck', version: $.deck.version}; //$.deck.version is currently undefined
-    if (window.Flowtime) return {name: 'flowtime', version: Flowtime.version};  //Reveal.version is currently undefined
-    if (window.Fathom) return {name: 'fathom', version: Fathom.version};  //Reveal.version is currently undefined
+    if (window.Flowtime) return {name: 'flowtime', version: Flowtime.version};  //Flowtime.version is currently undefined
+    if (window.Fathom) return {name: 'fathom', version: Fathom.version};  //Fathom.version is currently undefined
+    if (window.bespoke) return {name: 'bespoke', version: bespoke.version};  //bespoke.version is currently undefined
     return {error: 'presentation engine is not recognized'};
   }
 
@@ -61,6 +62,15 @@
       };
       presentationEngine.next = sendKeyPress.bind(null, 39);
       presentationEngine.prev = sendKeyPress.bind(null, 37);
+      presentationEngine.zoomIn = function() {};
+      presentationEngine.zoomOut = function() {};
+      presentationEngine.last = function() {};
+      presentationEngine.first = function() {};
+    }
+
+    if (presentationEngine.info.name === 'bespoke' && !presentationEngine.info.version) {
+      presentationEngine.next = bespoke.next;
+      presentationEngine.prev = bespoke.prev;
       presentationEngine.zoomIn = function() {};
       presentationEngine.zoomOut = function() {};
       presentationEngine.last = function() {};
