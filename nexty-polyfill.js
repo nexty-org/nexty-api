@@ -8,6 +8,7 @@
     if (window.Flowtime) return {name: 'flowtime', version: Flowtime.version};  //Flowtime.version is currently undefined
     if (window.Fathom) return {name: 'fathom', version: Fathom.version};  //Fathom.version is currently undefined
     if (window.bespoke) return {name: 'bespoke', version: bespoke.version};  //bespoke.version is currently undefined
+    if (window.impress) return {name: 'impress', version: impress.version};  //impress.version is currently undefined
     return {error: 'presentation engine is not recognized'};
   }
 
@@ -75,6 +76,31 @@
       presentationEngine.zoomOut = function() {};
       presentationEngine.last = function() {};
       presentationEngine.first = function() {};
+    }
+
+    if (presentationEngine.info.name === 'impress' && !presentationEngine.info.version) {
+      var steps = document.getElementsByClassName('step');
+      if (!steps.length) return;
+      var lastSlide = document.getElementsByClassName('step').length - 2;
+      var zoomedOutFrom = undefined;
+      resetZoomAndDo = function(func) {return function() { zoomedOutFrom = undefined; return func(); }};
+      presentationEngine.next = resetZoomAndDo(impress().next);
+      presentationEngine.prev = resetZoomAndDo(impress().prev);
+      presentationEngine.zoomIn = function() {
+        if (zoomedOutFrom) {
+          impress().goto(zoomedOutFrom);
+          zoomedOutFrom = undefined;
+        }
+      };
+      presentationEngine.zoomOut = function() {
+        current = document.getElementsByClassName('step present');
+        if (current.length && current[0].id !== 'overview' ) {
+          zoomedOutFrom = current[0];
+          impress().goto(-1);
+        }
+      };
+      presentationEngine.last = resetZoomAndDo(impress().goto.bind(null, lastSlide));
+      presentationEngine.first = resetZoomAndDo(impress().goto.bind(null, 0));
     }
   }
 
