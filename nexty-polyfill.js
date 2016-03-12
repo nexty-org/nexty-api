@@ -110,14 +110,14 @@
 
   window.addEventListener('message', function(event) {
     if (event.data === 'nexty-get-engine') return window.parent.postMessage(pe.info, '*');
-    if (!pe.info.name) return window.parent.postMessage('error: ' + pe.info.error, '*');
+    if (!presentationEngine.info.name) return window.parent.postMessage('error: ' + presentationEngine.info.error, '*');
     switch (event.data) {
-      case 'nexty-next': return pe.next();
-      case 'nexty-prev': return pe.prev();
-      case 'nexty-zoomIn': return pe.zoomIn();
-      case 'nexty-zoomOut': return pe.zoomOut();
-      case 'nexty-last': return pe.last();
-      case 'nexty-first': return pe.first();
+      case 'nexty-next': return presentationEngine.next();
+      case 'nexty-prev': return presentationEngine.prev();
+      case 'nexty-zoomIn': return presentationEngine.zoomIn();
+      case 'nexty-zoomOut': return presentationEngine.zoomOut();
+      case 'nexty-last': return presentationEngine.last();
+      case 'nexty-first': return presentationEngine.first();
       default: return window.parent.postMessage('error: unrecognized command', '*');
     }
   });
