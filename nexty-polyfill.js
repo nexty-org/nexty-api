@@ -130,7 +130,6 @@
       case 'nexty-zoomOut': return presentationEngine.zoomOut();
       case 'nexty-last': return presentationEngine.last();
       case 'nexty-first': return presentationEngine.first();
-      default: return window.parent.postMessage('error: unrecognized command', '*');
     }
   });
 
