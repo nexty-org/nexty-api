@@ -8,6 +8,7 @@
     if (window.Flowtime) return {name: 'flowtime', version: Flowtime.version};  //Flowtime.version is currently undefined
     if (window.Fathom) return {name: 'fathom', version: Fathom.version};  //Fathom.version is currently undefined
     if (window.bespoke) return {name: 'bespoke', version: bespoke.version};  //bespoke.version is currently undefined
+    if (window.$ && $.jmpress) return {name: 'jmpress', version: $.jmpress.version}; //$.jmpress.version is currently undefined
     if (window.impress) return {name: 'impress', version: impress.version};  //impress.version is currently undefined
     return {error: 'presentation engine is not recognized'};
   }
@@ -81,6 +82,7 @@
     }
 
     if (pe.info.name === 'impress' && !pe.info.version) {
+      console.log('impressed');
       var steps = document.getElementsByClassName('step');
       if (!steps.length) return;
       var lastSlide = document.getElementsByClassName('step').length - 2;
@@ -103,6 +105,16 @@
       };
       pe.last = resetZoomAndDo(impress().goto.bind(null, lastSlide));
       pe.first = resetZoomAndDo(impress().goto.bind(null, 0));
+    }
+
+    if (pe.info.name === 'jmpress' && !pe.info.version) {
+      var $root = $('.jmpress');
+      pe.next = function() {return $root.jmpress('next');};
+      pe.prev = function() {return $root.jmpress('prev');};
+      pe.first = function() {return $root.jmpress('home');};
+      pe.last = function() {return $root.jmpress('end');};
+      pe.zoomIn = function() {return $root.jmpress('zoomIn');};
+      pe.zoomOut = function() {return $root.jmpress('zoomOut');};
     }
   }
 
